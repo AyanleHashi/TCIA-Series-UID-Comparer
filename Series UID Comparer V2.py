@@ -8,13 +8,14 @@ class TK(tk.Frame):
     def __init__(self, root):
         tk.Frame.__init__(self, root)
         self.label = tk.Label(root, text='Carefully type the file location here').pack()
-        self.button = tk.Button(self, text='Print Value',
+        self.button = tk.Button(self, text='Find',
                                 command=self.button_print).pack()
         self.entry = tk.Entry(root)
         self.entry.pack()
 
     def button_print(self):
-        get = self.entry.get()
+#        get = self.entry.get()
+        get = os.getcwd()
         for (path, dirs, files) in os.walk(get, topdown=True):
             if not dirs:
                 self.output.append(os.path.basename(path))
