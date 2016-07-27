@@ -5,7 +5,11 @@ import difflib
 path_basename = []
 uid_list = []
 
-with open('900-00-1961 data.csv') as uid_csv:
+for name in os.listdir(os.getcwd()):
+    if name.endswith('.csv'):
+        csvname = name
+
+with open(csvname) as uid_csv:
     csvreader = csv.reader(uid_csv)
     for i in csvreader:
         for x in i:
@@ -14,7 +18,6 @@ with open('900-00-1961 data.csv') as uid_csv:
 while '' in uid_list:
     uid_list.remove('')
 uid_list.sort()
-#location = os.getcwd()
 
 for (path, dirs, files) in os.walk(os.getcwd()):
             if not dirs:
