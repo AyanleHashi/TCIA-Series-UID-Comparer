@@ -3,32 +3,37 @@ import csv
 import difflib
 
 path_basename = []
-UIDList = []
-difflist = []
+uid_list = []
 
-with open('Series Instance UID List.csv') as uid_csv:
+with open('900-00-1961 data.csv') as uid_csv:
     csvreader = csv.reader(uid_csv)
     for i in csvreader:
         for x in i:
-            UIDList.append(x)
+            uid_list.append(x)
 
-while '' in UIDList:
-    UIDList.remove('')
-UIDList.sort()
-location = os.getcwd()
-location = 'C:\Users\Ayanle\AppData\Local\Temp\REMBRANDT\900-00-1961'
+while '' in uid_list:
+    uid_list.remove('')
+uid_list.sort()
+#location = os.getcwd()
 
-for (path, dirs, files) in os.walk(location, topdown=True):
+for (path, dirs, files) in os.walk(os.getcwd()):
             if not dirs:
                 path_basename.append(os.path.basename(path))
 path_basename.sort()
 
 d = difflib.Differ()
-diff = d.compare(UIDList, path_basename)
+diff = d.compare(uid_list, path_basename)
 difference = '\n'.join(diff)
 
 difflines = difference.splitlines()
+find = '-'
+missing = [m for m in difflines if find in m]
 
-if '+' or '-' in difference:
-    print 'There was a difference:'
-    print difference
+if '-' in difference:
+    print('You are missing files. \nHere is a list of missing files:')
+    print(missing)
+elif '+' in difference:
+    print('You have extra files. \nHere is a list of extra files:')
+    print(difference)
+else:
+    print('No extra file downloads are needed.')
