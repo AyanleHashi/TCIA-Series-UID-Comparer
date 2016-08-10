@@ -29,10 +29,6 @@ with open(csvname) as csvfile:#Read csv file
     csvlist.sort()
 while '' in csvlist:
     csvlist.remove('')#Remove whitespaces
-csvlist.remove(csvlist[2])
-csvlist.remove(csvlist[5])
-csvlist.remove(csvlist[8])
-csvlist.remove(csvlist[10])
 if uid == csvlist:#Check the difference between the csv and extracted data
     print('All files are present.')
 else:
