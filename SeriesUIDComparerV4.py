@@ -14,6 +14,7 @@ for (path, dirs, files) in os.walk(os.getcwd(), topdown=True, onerror=False):
         if name.endswith('.dcm'): #Check for .dcm files
             dcmfile = dicom.read_file(path + "\\" + name)#if found, then read data
             uid.append(dcmfile.SeriesInstanceUID)
+            break
 uid = list(set(uid))#Remove duplicates from list
 uid.sort()
 
