@@ -1,16 +1,37 @@
 import os
 import dicom
 import time
+import csv
+    
 start = time.time()
-
-dcm = []
 uid = []
+pathlist = []
+csvlist = []
 
-for (path, dirs, files) in os.walk(os.getcwd()):
+print('Reading .dcm files...')
+for (path, dirs, files) in os.walk(os.getcwd(), topdown=True, onerror=False):
     for name in files:
-        if name.endswith('.dcm'):
-            dcm.append(name)
-            dcmfile = dicom.read_file(path + "\\" + name)
+        if name.endswith('.dcm'): #Check for .dcm files
+            dcmfile = dicom.read_file(path + "\\" + name)#if found, then read data
+            pathlist.append(path + '\\' + name)
             uid.append(dcmfile.SeriesInstanceUID)
-uid = list(set(uid))
-print("Done in", time.time() - start, "seconds.")
+uid = list(set(uid))#Remove duplicates from list
+uid.sort()
+print("Done reading in", time.time() - start, "seconds.")
+
+for name in os.listdir(os.getcwd()):#Look for series instance UID .csv file
+    if name.endswith('.csv'):
+        csvname = name
+with open(csvname) as csvfile:#Read csv file
+    csvreader = csv.reader(csvfile)
+    for i in csvreader:
+        for x in i:
+            csvlist.append(x)
+    csvlist.sort()
+while '' in csvlist:
+    csvlist.remove('')#Remove whitespaces
+
+if uid == csvlist:#Check the difference between the csv and extracted data
+    print 'ok'
+else:
+    print 'There was a difference'
