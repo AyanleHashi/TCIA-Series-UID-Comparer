@@ -2,7 +2,8 @@ import os
 import dicom
 import time
 import csv
-    
+import difflib
+
 start = time.time()
 uid = []
 pathlist = []
@@ -30,8 +31,13 @@ with open(csvname) as csvfile:#Read csv file
     csvlist.sort()
 while '' in csvlist:
     csvlist.remove('')#Remove whitespaces
-
+csvlist.remove(csvlist[6])
 if uid == csvlist:#Check the difference between the csv and extracted data
     print 'ok'
 else:
     print 'There was a difference'
+    d = difflib.Differ()
+    diff = d.compare(uid, csvlist)
+    difference = '\n'.join(diff).splitlines()
+    missing = [m for m in difference if '-' in m]
+    print missing
