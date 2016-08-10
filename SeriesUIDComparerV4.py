@@ -1,3 +1,5 @@
+#Updated to read from .dcm files directly instead of folder names
+from __future__ import print_function
 import os
 import dicom
 import csv
@@ -26,14 +28,11 @@ with open(csvname) as csvfile:#Read csv file
     csvlist.sort()
 while '' in csvlist:
     csvlist.remove('')#Remove whitespaces
-csvlist.remove(csvlist[4])
 if uid == csvlist:#Check the difference between the csv and extracted data
-    print 'ok'
+    print('All files are present.')
 else:
-    print('There was a difference\nComparing...')
     d = difflib.Differ()
     diff = d.compare(uid, csvlist)
     difference = '\n'.join(diff).splitlines()
     missing = [m for m in difference if '-' in m]
-    print('You are missing some files. Here is a list of the missing ones:')
-    print(missing)
+    print('You are missing some files. Here is a list of the missing ones:\n', [i for i in missing])
