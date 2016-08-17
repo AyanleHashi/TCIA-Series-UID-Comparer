@@ -9,7 +9,7 @@ csvlist = []
 
 print('Reading .dcm files...')
 for (path, dirs, files) in os.walk(os.getcwd(), topdown=True, onerror=False):
-    for name in files:
+    for name in files:#Read the current directory
         if name.endswith('.dcm'): #Check for .dcm files
             dcmfile = dicom.read_file(path + "\\" + name)#if found, then read data
             uid.append(dcmfile.SeriesInstanceUID)
@@ -27,8 +27,10 @@ with open(csvname) as csvfile:#Read csv file
         for x in i:
             csvlist.append(x)
     csvlist.sort()
+
 while '' in csvlist:
     csvlist.remove('')#Remove whitespaces
+
 if uid == csvlist:#Check the difference between the csv and extracted data
     print('All files are present.')
 else:
@@ -42,3 +44,4 @@ else:
         csvwriter = csv.writer(csvfile)
         for i in range(len(missing)):
             csvwriter.writerow([missing[i]])
+    print("A file named 'MissingCSVs.csv' has been created.")
